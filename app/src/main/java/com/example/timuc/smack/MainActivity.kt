@@ -1,5 +1,6 @@
 package com.example.timuc.smack
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -35,7 +36,8 @@ class MainActivity : AppCompatActivity(){
     }
 
     fun loginBtnNavClicked(view: View){
-
+        val loginIntend = Intent(this, LoginActivity::class.java)
+        startActivity(loginIntend)
     }
 
     fun addChannelClicked(view: View){
