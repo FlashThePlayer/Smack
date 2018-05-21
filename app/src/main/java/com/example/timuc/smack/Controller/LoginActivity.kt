@@ -1,9 +1,10 @@
-package com.example.timuc.smack
+package com.example.timuc.smack.Controller
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.example.timuc.smack.R
 
 class LoginActivity : AppCompatActivity() {
 

@@ -1,9 +1,11 @@
-package com.example.timuc.smack
+package com.example.timuc.smack.Controller
 
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.example.timuc.smack.R
+import com.example.timuc.smack.Services.AuthService
 import kotlinx.android.synthetic.main.activity_create_user.*
 import java.util.*
 
@@ -33,7 +35,12 @@ class CreateUserActivity : AppCompatActivity() {
     }
 
     fun createUserClicked(view: View){
+        AuthService.registerUser(this, "t@a.com", "123456" ){complete ->
+            if (complete){
 
+            }
+
+        }
     }
 
     fun generateColorClicked(view: View){
