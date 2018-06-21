@@ -9,6 +9,7 @@ import com.example.timuc.smack.Controller.App
 import com.example.timuc.smack.Model.Channel
 import com.example.timuc.smack.Model.Message
 import com.example.timuc.smack.Utilities.URL_GET_ALL_CHANNELS
+import com.example.timuc.smack.Utilities.URL_GET_ALL_MESSAGES
 import org.json.JSONException
 
 object MessageService {
@@ -36,7 +37,7 @@ object MessageService {
                 Log.d("JSON", "EXC: " + e.localizedMessage)
             }
 
-        }, com.android.volley.Response.ErrorListener { error ->
+        }, Response.ErrorListener { error ->
             Log.d("ERROR", "Could not retrieve channels")
             complete(false)
         }) {
@@ -52,4 +53,55 @@ object MessageService {
         }
         App.prefs.requestQueue.add(channelsRequest)
     }
+
+    fun getMessages(channelId: String, complete: (Boolean) -> Unit){
+        val url = "$URL_GET_ALL_MESSAGES$channelId"
+
+        val messagesRequest = object: JsonArrayRequest(Method.GET, url, null, Response.Listener {response ->
+
+            try {
+                for (x in 0 until response.length()){
+                    val message = response.getJSONObject(x)
+                    val messageBody = message.getString("messageBody")
+                    val channelId = message.getString("channelId")
+                    val id = message.getString("_id")
+                    val userName = message.getString("userName")
+                    val userAvatar = message.getString("userAvatar")
+                    val userAvatarColor = message.getString("userAvatarColor")
+                    val timeStamp = message.getString("timeStamp")
+
+                    val newMessage = Message(messageBody, userName, channelId, userAvatar, userAvatarColor, id, timeStamp)
+                    this.messages.add(newMessage)
+
+                }
+                complete(true)
+            }catch (e: JSONException){
+                Log.d("ERROR", "Could not retrieve messages")
+            }
+
+        }, Response.ErrorListener { error ->
+            Log.d("ERROR", "Could not retrieve channels")
+            complete(false)
+        }){
+            override fun getBodyContentType(): String {
+                return  "application/json; charset=utf-8"
+            }
+
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers.put("Authorization", "Bearer ${App.prefs.authToken}")
+                return headers
+            }
+        }
+        App.prefs.requestQueue.add(messagesRequest)
+    }
+
+    fun clearMessage(){
+        messages.clear()
+    }
+
+    fun channelsClear(){
+        channels.clear()
+    }
+
 }

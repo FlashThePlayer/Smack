@@ -2,6 +2,7 @@ package com.example.timuc.smack.Services
 
 import android.graphics.Color
 import com.example.timuc.smack.Controller.App
+import com.example.timuc.smack.Model.Message
 import java.util.*
 
 object UserDataService {
@@ -38,6 +39,8 @@ object UserDataService {
         App.prefs.authToken=""
         App.prefs.userEmail=""
         App.prefs.isLoggedIn= false
+        MessageService.clearMessage()
+        MessageService.channelsClear()
     }
 
 }
